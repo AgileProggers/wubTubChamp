@@ -11,7 +11,9 @@ Stream looping video with random audio of a YouTube playlist to rtmp.
 
 # Example
 
+```
 ./stream.sh "https://youtube.com/playlist?list=PLV2ewAgCPCq0DVamOw2sQSAVdFVjA6x78" "rtmp://fra02.contribute.live-video.net/app/{stream_key}"
+```
 
 # Might be useful
 
