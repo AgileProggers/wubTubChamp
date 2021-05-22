@@ -40,7 +40,7 @@ while true; do
        done
        prev_song=$next_song
        # ffmpeg pipe to mbuffer to ffmpeg
-       ffmpeg -hide_banner -loglevel warning -i "$next_song" -vn -c:a copy -f opus -
+       ffmpeg -hide_banner -loglevel warning -i "$next_song" -vn -c:a copy -f mpegts -
 done | mbuffer -q -c -m 20M | \
 ffmpeg -re -hide_banner -loglevel warning -stats -stream_loop -1 \
 -i wubTub.mp4 \
