@@ -51,6 +51,6 @@ ffmpeg -re -hide_banner -loglevel warning -stats -stream_loop -1 \
 -c:a aac \
 -b:a 320k \
 -ar 48k \
--af loudnorm=I=-14:TP=-1:LRA=9 \
+-af loudnorm=I=-18:TP=-1:LRA=9 \
 -flags +global_header \
 -f flv "$rtmp_stream"
