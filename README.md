@@ -18,3 +18,7 @@ Stream looping video with random audio of a YouTube playlist to rtmp.
 ## Might be useful
 
 You can change the playlist at any time by editing the `playlist.txt` file. Just add or remove songs.
+
+## To do
+
+- [ ] Completely download songs for caching before playing to prevent [#1](https://github.com/AgileProggers/wubTubChamp/issues/1). Streaming the video seems to break songs every now and then. Delete songs after streamed.
