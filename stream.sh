@@ -2,11 +2,12 @@
 
 # check cli args
 if [ "$#" -lt 2 ]; then
-       echo "./stream.sh <youtube playlist url> <rtmp stream url>"
+       echo "./stream.sh <rtmp stream url> <youtube playlist url>"
        exit 1
 else
-       playlist=$1
-       rtmp_stream=$2
+       rtmp_stream=$1
+       playlist=$2
+
 fi
 
 # check for ffmpeg, mbuffer, youtube-dl and jq
@@ -27,30 +28,21 @@ if ! [ -x "$(command -v jq)" ]; then
        exit 1
 fi
 
-# playlist links to file
-youtube-dl -j --flat-playlist "$playlist" | jq -r '.id' | sed 's_^_https://youtu.be/_' > playlist.txt
+# download playlist
+if [ ! -d "cache" ]; then
+       mkdir cache
+fi
+#youtube-dl -f bestaudio[acodec=opus]/best --download-archive cache.txt "$playlist" -o "cache/%(id)s.%(ext)s"
 
 # run the loop
 prev_song=""
 while true; do
        # dont repeat songs
-       next_song="$(youtube-dl -g -f bestaudio[acodec=opus] "$(shuf -n 1 playlist.txt)")"
+       next_song="$(find cache/ -type f | shuf -n 1)"
        while [ "$next_song" == "$prev_song" ]; do
-              next_song="$(youtube-dl -g -f bestaudio[acodec=opus] "$(shuf -n 1 playlist.txt)")"
+              next_song="$(find cache/ -type f | shuf -n 1)"
        done
        prev_song=$next_song
        # ffmpeg pipe to mbuffer to ffmpeg
        ffmpeg -hide_banner -loglevel warning -i "$next_song" -vn -c:a copy -f mpegts -
-done | mbuffer -q -c -m 50M | \
-ffmpeg -re -hide_banner -loglevel warning -stats -stream_loop -1 \
--i wubTub.mp4 \
--i - \
--map 0:v \
--map 1:a \
--c:v copy \
--c:a aac \
--b:a 320k \
--ar 48k \
--af loudnorm=I=-18:TP=-1:LRA=9 \
--flags +global_header \
--f flv "$rtmp_stream"
+done | mbuffer -q -c -m 50M | ffmpeg -re -hide_banner -loglevel warning -stats -stream_loop -1 -i wubTub.mp4 -i - -map 0:v -map 1:a -c:v copy -c:a aac -b:a 320k -ar 48k -af loudnorm=I=-23:TP=-1:LRA=9 -flags +global_header -f flv "$rtmp_stream"

@@ -12,17 +12,9 @@ Stream looping video with random audio of a YouTube playlist to rtmp.
 ## Example
 
 ```bash
-./stream.sh "https://youtube.com/playlist?list=PLV2ewAgCPCq0DVamOw2sQSAVdFVjA6x78" "rtmp://fra02.contribute.live-video.net/app/{stream_key}"
+./stream.sh "rtmp://fra02.contribute.live-video.net/app/{stream_key}" "https://www.youtube.com/playlist?list=PLeMER9rHllyCpdkCTvOMLe1qJV3LVKxzI"
 ```
 
 ## Might be useful
 
-You can change the playlist at any time by editing the `playlist.txt` file. Just add or remove songs or use the included script.
-
-```bash
-./change_playlist.sh "https://youtube.com/playlist?list=PLV2ewAgCPCq0DVamOw2sQSAVdFVjA6x78"
-```
-
-## To do
-
-- [ ] Completely download songs for caching before playing to prevent [#1](https://github.com/AgileProggers/wubTubChamp/issues/1). Streaming the video seems to break songs every now and then. Delete songs after streamed.
+You can change songs at any time by adding or removing files from the `cache` dir. If you do so, keep in mind that modifing the cache dir makes the `cache.txt` file incorrect, which keeps track of all downloaded tracks.
