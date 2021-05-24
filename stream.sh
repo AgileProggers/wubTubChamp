@@ -32,7 +32,7 @@ fi
 if [ ! -d "cache" ]; then
        mkdir cache
 fi
-#youtube-dl -f bestaudio[acodec=opus]/best --download-archive cache.txt "$playlist" -o "cache/%(id)s.%(ext)s"
+youtube-dl -f bestaudio[acodec=opus]/best --download-archive cache.txt "$playlist" -o "cache/%(id)s.%(ext)s"
 
 # run the loop
 prev_song=""
