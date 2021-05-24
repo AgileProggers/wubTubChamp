@@ -32,7 +32,7 @@ fi
 if [ ! -d "cache" ]; then
        mkdir cache
 fi
-youtube-dl -f bestaudio[acodec=opus]/best --download-archive cache.txt "$playlist" -o "cache/%(id)s.%(ext)s"
+youtube-dl -f "bestaudio" --download-archive cache.txt --ignore-errors "$playlist" -o "cache/%(id)s.%(ext)s"
 
 # run the loop
 prev_song=""
@@ -44,5 +44,5 @@ while true; do
        done
        prev_song=$next_song
        # ffmpeg pipe to mbuffer to ffmpeg
-       ffmpeg -hide_banner -loglevel warning -i "$next_song" -vn -c:a copy -f mpegts -
+       ffmpeg -hide_banner -loglevel warning -i "$next_song" -c copy -f mpegts -
 done | mbuffer -q -c -m 50M | ffmpeg -re -hide_banner -loglevel warning -stats -stream_loop -1 -i wubTub.mp4 -i - -map 0:v -map 1:a -c:v copy -c:a aac -b:a 320k -ar 48k -af loudnorm=I=-23:TP=-1:LRA=9 -flags +global_header -f flv "$rtmp_stream"
